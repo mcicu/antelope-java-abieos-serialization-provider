@@ -1,4 +1,4 @@
-package one.block.eosiojavaabieosserializationprovider;
+package io.antelope.antelopejavaabieosserializationprovider;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

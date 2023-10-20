@@ -1,6 +1,6 @@
-package one.block.eosiojavaabieosserializationprovider;
+package io.antelope.antelopejavaabieosserializationprovider;
 
-import one.block.eosiojava.error.serializationProvider.SerializationProviderError;
+import io.antelope.javasdk.error.serializationProvider.SerializationProviderError;
 import org.jetbrains.annotations.NotNull;
 
 /**

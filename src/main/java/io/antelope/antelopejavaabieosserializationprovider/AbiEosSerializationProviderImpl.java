@@ -1,16 +1,16 @@
-package one.block.eosiojavaabieosserializationprovider;
+package io.antelope.antelopejavaabieosserializationprovider;
 
-import one.block.eosiojava.error.serializationProvider.DeserializeAbiError;
-import one.block.eosiojava.error.serializationProvider.DeserializeError;
-import one.block.eosiojava.error.serializationProvider.DeserializePackedTransactionError;
-import one.block.eosiojava.error.serializationProvider.DeserializeTransactionError;
-import one.block.eosiojava.error.serializationProvider.SerializationProviderError;
-import one.block.eosiojava.error.serializationProvider.SerializeAbiError;
-import one.block.eosiojava.error.serializationProvider.SerializeError;
-import one.block.eosiojava.error.serializationProvider.SerializePackedTransactionError;
-import one.block.eosiojava.error.serializationProvider.SerializeTransactionError;
-import one.block.eosiojava.interfaces.ISerializationProvider;
-import one.block.eosiojava.models.AbiEosSerializationObject;
+import io.antelope.javasdk.error.serializationProvider.DeserializeAbiError;
+import io.antelope.javasdk.error.serializationProvider.DeserializeError;
+import io.antelope.javasdk.error.serializationProvider.DeserializePackedTransactionError;
+import io.antelope.javasdk.error.serializationProvider.DeserializeTransactionError;
+import io.antelope.javasdk.error.serializationProvider.SerializationProviderError;
+import io.antelope.javasdk.error.serializationProvider.SerializeAbiError;
+import io.antelope.javasdk.error.serializationProvider.SerializeError;
+import io.antelope.javasdk.error.serializationProvider.SerializePackedTransactionError;
+import io.antelope.javasdk.error.serializationProvider.SerializeTransactionError;
+import io.antelope.javasdk.interfaces.ISerializationProvider;
+import io.antelope.javasdk.models.AbiEosSerializationObject;
 import org.bouncycastle.util.encoders.DecoderException;
 import org.bouncycastle.util.encoders.Hex;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +23,7 @@ public class AbiEosSerializationProviderImpl implements ISerializationProvider {
 
     static {
         if (!EmbeddedLibraryTools.LOADED_EMBEDDED_LIBRARY)
-            System.loadLibrary("eosiojavaabieos");
+            System.loadLibrary("antelopejavaabieos");
     }
 
     public native String stringFromAbiEos();

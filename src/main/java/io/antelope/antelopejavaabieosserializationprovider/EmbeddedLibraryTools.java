@@ -1,13 +1,7 @@
-package one.block.eosiojavaabieosserializationprovider;
+package io.antelope.antelopejavaabieosserializationprovider;
 
 import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 public class EmbeddedLibraryTools {
 
@@ -26,9 +20,9 @@ public class EmbeddedLibraryTools {
 
         // attempt to locate embedded native library within JAR at following location:
         String[] allowedExtensions = new String[]{"dylib", "so", "dll"};
-        String[] libs = new String[]{"libeosiojavaabieos"};
+        String[] libs = new String[]{"libantelopejavaabieos"};
         StringBuilder url = new StringBuilder();
-        url.append("/eosiojavaabieos/build/lib/main/debug/");
+        url.append("/antelopejavaabieos/build/lib/main/debug/");
         for (String lib : libs) {
             URL nativeLibraryUrl = null;
             // loop through extensions, stopping after finding first one

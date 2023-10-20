@@ -1,4 +1,4 @@
-package one.block.eosiojavaabieosserializationprovider;
+package io.antelope.antelopejavaabieosserializationprovider;
 
 import java.util.Collections;
 import java.util.HashMap;

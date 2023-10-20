@@ -1,9 +1,9 @@
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import one.block.eosiojava.error.serializationProvider.*;
-import one.block.eosiojava.models.AbiEosSerializationObject;
-import one.block.eosiojavaabieosserializationprovider.AbiEosSerializationProviderImpl;
+import io.antelope.javasdk.error.serializationProvider.*;
+import io.antelope.javasdk.models.AbiEosSerializationObject;
+import io.antelope.antelopejavaabieosserializationprovider.AbiEosSerializationProviderImpl;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -271,7 +271,7 @@ public class AbieosTest {
         } catch (SerializeError err) {
             err.printStackTrace();
             errorThrown = true;
-            assertEquals("one.block.eosiojava.error.serializationProvider.SerializeError: Unable to find type for action invalid. contract \"contract\" does not have action \"invalid\"", err.getMessage());
+            assertEquals("io.antelope.javasdk.error.serializationProvider.SerializeError: Unable to find type for action invalid. contract \"contract\" does not have action \"invalid\"", err.getMessage());
         }
 
         assertNull(hex);
@@ -398,7 +398,7 @@ public class AbieosTest {
         } catch (DeserializeError err) {
             err.printStackTrace();
             errorThrown = true;
-            assertEquals("one.block.eosiojava.error.serializationProvider.DeserializeError: Unable to find type for action invalid. contract \"contract\" does not have action \"invalid\"", err.getMessage());
+            assertEquals("io.antelope.javasdk.error.serializationProvider.DeserializeError: Unable to find type for action invalid. contract \"contract\" does not have action \"invalid\"", err.getMessage());
         }
 
         assertNull(json);

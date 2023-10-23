@@ -1,22 +1,41 @@
+import org.gradle.internal.jvm.Jvm
+import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
+
 buildscript {
     repositories {
-        jcenter()
         mavenCentral()
     }
 }
 
 plugins {
     id 'java-library'
+
+    // plugins necessary for publishing to sonatype / mvn central
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     id 'maven-publish'
+    id 'signing'
 }
 
 allprojects {
     repositories {
-        jcenter()
         mavenCentral()
         mavenLocal()
     }
 }
+
+def platform = 'unknown'
+OperatingSystem os = DefaultNativePlatform.currentOperatingSystem;
+if (os.isMacOsX()) {
+    platform = 'darwin'
+} else if (os.isLinux()) {
+    platform = 'linux'
+} else if (os.isWindows()) {
+    platform = 'windows'
+}
+
+project.group = 'io.github.mcicu'
+project.version = '0.0.1'
+ext.projectNameWithPlatform = project.name + '-' + platform
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -25,8 +44,8 @@ dependencies {
     implementation fileTree(include: ['*.jar', "*.dylib", "*.so"], dir: 'libs')
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     implementation group: 'org.json', name: 'json', version: '20200518'
-    implementation 'io.antelope:java-sdk:0.0.1-SNAPSHOT'
-    implementation 'org.jetbrains:annotations:17.0.0'
+    implementation 'io.github.mcicu:antelope-java-sdk:0.0.1'
+    implementation 'org.jetbrains:annotations:24.0.1'
 }
 
 jar {
@@ -71,56 +90,72 @@ tasks.register('deleteCopiedNativeLibrary', Delete) {
 
 clean.dependsOn 'deleteCopiedNativeLibrary'
 
-def libraryGroupId = 'io.antelope'
-def libraryArtifactId = 'java-abieos-serialization-provider'
-def libraryVersion = '0.0.1-SNAPSHOT'
-
-tasks.register('sourcesJar', Jar) {
-    dependsOn classes
-    classifier = 'sources'
+tasks.register('sourceJar', Jar) {
+    classifier('sources')
     from sourceSets.main.allSource
 }
 
 javadoc.failOnError = false
 tasks.register('javadocJar', Jar) {
-    dependsOn javadoc
-    classifier = 'javadoc'
-    from javadoc.destinationDir
+    classifier('javadoc')
+    from javadoc
 }
 
 artifacts {
-    archives sourcesJar
+    archives sourceJar
     archives javadocJar
 }
 
 publishing {
     publications {
-        jar(MavenPublication) {
+        javaPubl(MavenPublication) {
+            groupId project.group
+            artifactId project.ext.projectNameWithPlatform
+            version project.version
+
             from components.java
-
-            artifact sourcesJar {
-                classifier "sources"
-            }
-
-            artifact javadocJar {
-                classifier "javadoc"
-            }
-
-            groupId libraryGroupId
-            version libraryVersion
-            artifactId libraryArtifactId
+            artifact sourceJar
+            artifact javadocJar
 
             pom {
-                name = 'Antelope SDK for Java: ABIEOS Serialization Provider'
-                description = 'ABIEOS Serialization Provider is intended to be used in conjunction with Antelope SDK for Java as a provider plugin.'
-                url = 'https://github.com/mcicu/antelope-java-abieos-serialization-provider/'
+                name = "ABIEOS Serialization Provider for Antelope Java SDK"
+                description = "ABIEOS Serialization Provider for Antelope Java SDK"
+                url = "https://github.com/mcicu/antelope-java-abieos-serialization-provider/"
                 licenses {
                     license {
-                        name = 'MIT License'
-                        url = 'https://github.com/mcicu/antelope-java-abieos-serialization-provider/blob/master/LICENSE'
+                        name = "MIT License"
+                        url = "https://github.com/mcicu/antelope-java-abieos-serialization-provider/blob/master/LICENSE"
                     }
                 }
+                developers {
+                    developer {
+                        name = "mcicu"
+                        email = "cicumihai02@gmail.com"
+                    }
+                }
+                scm {
+                    connection = "scm:git:git://github.com/mcicu/antelope-java-abieos-serialization-provider.git"
+                    developerConnection = "scm:git:git://github.com/mcicu/antelope-java-abieos-serialization-provider.git"
+                    url = "https://github.com/mcicu/antelope-java-abieos-serialization-provider"
+                }
             }
+        }
+    }
+}
+
+signing {
+    required { !version.endsWith("SNAPSHOT") && gradle.taskGraph.hasTask("publish") }
+    sign publishing.publications
+}
+
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            username = project.hasProperty("sonatype.username") ? project.property("sonatype.username") : ""
+            password = project.hasProperty("sonatype.password") ? project.property("sonatype.password") : ""
         }
     }
 }
